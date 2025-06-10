@@ -1,0 +1,27 @@
+{
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "semi": true,
+  "singleQuote": true,
+  "printWidth": 80,
+  "bracketSpacing": true,
+  "jsxBracketSameLine": false,
+  "arrowParens": "always",
+  "endOfLine": "lf",
+  "useTabs": false,
+  "quoteProps": "as-needed",
+  "insertPragma": false,
+  "proseWrap": "preserve",
+  "overrides": [
+    {
+      "files": "*.tsx",
+      "options": {
+        "printWidth": 120,
+        "bracketSpacing": false,
+        "jsxBracketSameLine": true,
+        "singleQuote": false,
+        "insertPragma": false
+      }
+    }
+  ]
+}
