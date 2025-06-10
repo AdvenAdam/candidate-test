@@ -2,16 +2,22 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
+    "types": [
+      "vite/client",
+      "node"],
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "baseUrl": ".",
+        "baseUrl": ".",
     "paths": {
       "@/*": ["resources/js/*"]
     },
   },
-  "include": ["resources/js"]
+    "include": [
+    "resources/js",
+    "vite-env.d.ts"
+  ]
 }
