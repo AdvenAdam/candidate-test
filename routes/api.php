@@ -13,3 +13,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/suppliers', [SupplierController::class, 'index']);
 Route::get('/suppliers/{supplier}', [SupplierController::class, 'show']);
+Route::get('/test', function () {
+    return response()->json(['message' => 'API is working']);
+});

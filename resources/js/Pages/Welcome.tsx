@@ -1,6 +1,7 @@
 import { Head, Link } from "@inertiajs/react";
+import { AuthProps } from "../types/Auth";
 
-export default function Welcome({ auth }) {
+export default function Welcome({ auth }: AuthProps) {
     const handleImageError = () => {
         document
             .getElementById("screenshot-container")
