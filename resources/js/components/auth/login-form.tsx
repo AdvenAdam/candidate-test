@@ -1,13 +1,13 @@
-import {useForm} from "react-hook-form";
-import {z} from "zod";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {usePage, router} from "@inertiajs/react";
-import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
-import {cn} from "@/lib/utils";
-import {route} from "ziggy-js";
-import {useEffect} from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { usePage, router } from "@inertiajs/react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
+import { route } from "ziggy-js";
+import { useEffect } from "react";
 
 // Zod schema for client-side validation
 const loginSchema = z.object({
@@ -17,26 +17,29 @@ const loginSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
-export function LoginForm({className, ...props}: React.ComponentProps<"form">) {
+export interface LoginFormProps extends React.ComponentProps<"form"> {
+  setIsLoginPage: React.Dispatch<React.SetStateAction<boolean>>;
+}
+export function LoginForm({ className, setIsLoginPage, ...props }: LoginFormProps) {
   const {
     register,
     handleSubmit,
     setError,
-    formState: {errors},
+    formState: { errors },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     mode: "all",
   });
-  const {errors: serverErrors} = usePage().props as {
+  const { errors: serverErrors } = usePage().props as {
     errors: Partial<Record<keyof LoginFormValues, string>>;
   };
 
   useEffect(() => {
     if (serverErrors.email) {
-      setError("email", {type: "server", message: serverErrors.email});
+      setError("email", { type: "server", message: serverErrors.email });
     }
     if (serverErrors.password) {
-      setError("password", {type: "server", message: serverErrors.password});
+      setError("password", { type: "server", message: serverErrors.password });
     }
   }, [serverErrors, setError]);
 
@@ -54,7 +57,7 @@ export function LoginForm({className, ...props}: React.ComponentProps<"form">) {
       <div className="grid gap-6">
         <div className="grid gap-3">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" {...register("email")} />
+          <Input id="email" type="email" {...register("email")} placeholder="m@example.com" />
           {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
         </div>
 
@@ -71,7 +74,7 @@ export function LoginForm({className, ...props}: React.ComponentProps<"form">) {
 
       <div className="text-center text-sm">
         Don&apos;t have an account?{" "}
-        <a href={route("register")} className="underline underline-offset-4">
+        <a onClick={() => setIsLoginPage(false)} className="underline underline-offset-4 cursor-pointer">
           Register
         </a>
       </div>
