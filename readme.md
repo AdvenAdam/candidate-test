@@ -2,7 +2,7 @@
 
 * Clone or fork this repository.
 * Create a new branch, `{user}-assignment`, for your work.
-* Invite @ikhsan017 to be a collaborator.
+* Invite @ikhsan017 and @dhiaaziz to be a collaborator.
 * Please do migrate and seed first before running the project. After that `GET /api/suppliers` should be able to return a list of suppliers.
 * The full brief about the project can be found here [Brief](https://honeysuckle-paneer-19b.notion.site/Skill-Test-Feature-Team-208eb56ecde880139e5dfcbdaa40ab4a).
 
