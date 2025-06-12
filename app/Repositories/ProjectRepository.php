@@ -38,6 +38,8 @@ class ProjectRepository implements ProjectRepositoryInterface
 
     public function delete($id)
     {
-        return Project::destroy($id);
+        $project = Project::findOrFail($id);
+        $project->materials()->delete();
+        return $project->delete();
     }
 }

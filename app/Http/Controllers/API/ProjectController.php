@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Repositories\ProjectRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
@@ -25,11 +26,11 @@ class ProjectController extends Controller
         $data = $request->validate([
             'name' => 'required|string',
             'description' => 'nullable|string',
-            'user_id' => 'required|exists:users,id',
         ]);
 
-        $project = $this->projectRepo->create($data);
-        return response()->json($project, 201);
+        $data['user_id'] = Auth::id();
+
+        $this->projectRepo->create($data);
     }
 
     public function show($id)

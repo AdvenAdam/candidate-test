@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 import {
   ArrowUpCircleIcon,
   BarChartIcon,
@@ -15,12 +15,12 @@ import {
   SearchIcon,
   SettingsIcon,
   UsersIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-import { NavDocuments } from "@/components/nav-documents"
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
+import {NavDocuments} from "@/components/nav-documents";
+import {NavMain} from "@/components/nav-main";
+import {NavSecondary} from "@/components/nav-secondary";
+import {NavUser} from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -29,7 +29,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 const data = {
   user: {
@@ -44,26 +44,19 @@ const data = {
     },
     {
       title: "Projects",
-      url: "/projects",
+      url: "/project",
       icon: FolderIcon,
     },
-
   ],
+};
 
-
-
-}
-
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
+            <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <a href="#">
                 <ArrowUpCircleIcon className="h-5 w-5" />
                 <span className="text-base font-semibold">CLT Toolbox.</span>
@@ -79,5 +72,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }
