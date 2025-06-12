@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\WEB;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\ProjectRepositoryInterface;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ProjectController extends Controller
@@ -19,6 +18,6 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = $this->projectRepo->all();
-        return Inertia::render('Projects/Index', ['projects' => $projects]);
+        return Inertia::render('Projects/index', ['projects' => $projects]);
     }
 }
