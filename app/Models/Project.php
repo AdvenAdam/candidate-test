@@ -10,10 +10,15 @@ class Project extends Model
     use HasFactory;
     protected $table = 'projects';
 
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'description', 'user_id'];
 
     public function materials()
     {
         return $this->hasMany(Material::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

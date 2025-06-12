@@ -3,13 +3,21 @@
 namespace App\Repositories;
 
 use App\Models\Project;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectRepository implements ProjectRepositoryInterface
 {
-    public function all()
+    public function all(array $filters = [])
     {
-        return Project::with('materials')->get();
+        return Project::with(['materials', 'user'])
+            ->when(
+                isset($filters['user_id']),
+                fn($q) => $q->where('user_id', $filters['user_id']),
+                fn($q) => $q->where('user_id', Auth::id())
+            )
+            ->get();
     }
+
 
     public function find($id)
     {

@@ -14,6 +14,7 @@ class ProjectFactory extends Factory
         return [
             'name' => $this->faker->company(),
             'description' => $this->faker->sentence(10),
+            'user_id' => UserFactory::new(),
         ];
     }
 }

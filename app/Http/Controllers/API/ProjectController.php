@@ -25,6 +25,7 @@ class ProjectController extends Controller
         $data = $request->validate([
             'name' => 'required|string',
             'description' => 'nullable|string',
+            'user_id' => 'required|exists:users,id',
         ]);
 
         $project = $this->projectRepo->create($data);
