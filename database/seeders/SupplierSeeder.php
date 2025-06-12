@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Material;
 use App\Models\Supplier;
 use Illuminate\Database\Seeder;
 
@@ -12,7 +13,9 @@ class SupplierSeeder extends Seeder
      */
     public function run(): void
     {
-        Supplier::truncate();
+        Material::query()->delete(); // First remove dependent data
+        Supplier::query()->delete(); // Then delete suppliers
+
 
         Supplier::create([
             'name'          => 'Sodra',

@@ -10,4 +10,9 @@ class Supplier extends Model
         'name',
         'material_type',
     ];
+
+    public function materials()
+    {
+        return $this->hasOne(Material::class);
+    }
 }
