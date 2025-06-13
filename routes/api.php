@@ -20,6 +20,7 @@ Route::get('/test', function () {
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/material-types', [SupplierController::class, 'getMaterialTypes']);
 
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
@@ -36,7 +37,9 @@ Route::middleware(['auth:sanctum', 'auth'])->group(function () {
         Route::delete('materials/{material}', [MaterialController::class, 'destroy']);
     });
 
-    // Suppliers (example public or authenticated)
+
+    // Nested materials under a supplier
     Route::get('/suppliers', [SupplierController::class, 'index']);
     Route::get('/suppliers/{supplier}', [SupplierController::class, 'show']);
 });
+Route::get('/supplier-materials', [SupplierController::class, 'getSupplierMaterials']);

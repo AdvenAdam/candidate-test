@@ -13,6 +13,6 @@ class Supplier extends Model
 
     public function materials()
     {
-        return $this->hasOne(Material::class);
+        return $this->hasMany(Material::class);
     }
 }

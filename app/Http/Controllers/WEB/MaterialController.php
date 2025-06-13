@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\WEB;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\MaterialRepositoryInterface;
@@ -15,10 +15,6 @@ class MaterialController extends Controller
         $this->materialRepo = $materialRepo;
     }
 
-    public function index($projectId)
-    {
-        return response()->json($this->materialRepo->getByProject($projectId));
-    }
 
     public function store(Request $request, $projectId)
     {
@@ -30,24 +26,30 @@ class MaterialController extends Controller
         ]);
 
         $data['project_id'] = $projectId;
-        $material = $this->materialRepo->create($data);
-        return response()->json($material, 201);
+        $this->materialRepo->create($data);
+        return redirect()->back()
+            ->with('success', 'Material created successfully!');
     }
 
     public function update(Request $request, $projectId, $id)
     {
         $data = $request->validate([
-            'name' => 'sometimes|required|string',
-            'quantity' => 'sometimes|required|integer',
+            'name' => 'required|string',
+            'building_part_type' => 'required|string',
+            'material' => 'required|string|in:clt,glt',
+            'supplier_id' => 'required',
         ]);
 
-        $material = $this->materialRepo->update($id, $data);
-        return response()->json($material);
+        $data['project_id'] = $projectId;
+        $this->materialRepo->update($id, $data);
+        return redirect()->back()
+            ->with('success', 'Material updated successfully!');
     }
 
     public function destroy($projectId, $id)
     {
         $this->materialRepo->delete($id);
-        return response()->json(null, 204);
+
+        return back()->with('success', 'Material deleted successfully!');
     }
 }

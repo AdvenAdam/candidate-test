@@ -4,8 +4,10 @@ import {SiteHeader} from "@/components/site-header";
 import {SidebarInset, SidebarProvider} from "@/components/ui/sidebar";
 import {useAuthStore} from "@/stores/useAuthStore";
 import {AuthProps} from "@/types/Auth";
-import {usePage} from "@inertiajs/react";
-import {PropsWithChildren, ReactNode, useEffect} from "react";
+import {router, usePage} from "@inertiajs/react";
+import {PropsWithChildren, ReactNode, useEffect, useState} from "react";
+import {set} from "react-hook-form";
+import {toast} from "sonner";
 
 type AuthenticatedLayoutProps = PropsWithChildren<{
   header?: ReactNode;
@@ -13,12 +15,26 @@ type AuthenticatedLayoutProps = PropsWithChildren<{
 
 export default function AuthenticatedLayout({header, children}: AuthenticatedLayoutProps) {
   const {auth} = usePage<AuthProps>().props;
-  const user = auth.user;
   const setUser = useAuthStore((state) => state.setUser);
 
   useEffect(() => {
-    setUser(user);
-  }, [user, setUser]);
+    setUser(auth.user);
+  }, [auth.user, setUser]);
+
+  useEffect(() => {
+    const unsubscribe = router.on("success", (event) => {
+      const pageProps = event.detail.page.props as {
+        flash?: {success?: string; error?: string};
+      };
+
+      const flash = pageProps.flash ?? {};
+
+      if (flash.success) toast.success(flash.success);
+      if (flash.error) toast.error(flash.error);
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
     <SidebarProvider>

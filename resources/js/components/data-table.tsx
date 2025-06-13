@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -14,14 +13,12 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import {
-  CheckCircle2Icon,
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   ChevronsLeftIcon,
   ChevronsRightIcon,
   ColumnsIcon,
-  MoreVerticalIcon,
   PlusIcon,
 } from "lucide-react";
 import {Button} from "@/components/ui/button";
@@ -35,22 +32,27 @@ import {Label} from "@/components/ui/label";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import AddProject from "@/components/add-project-modal";
+import AddMaterial from "./add-material-modal";
+import {useState} from "react";
 
 interface DataTableProps<T> {
   data: T[];
   columns: ColumnDef<T>[];
+  tableType: "projects" | "materials";
   getRowId?: (row: T) => string;
 }
 
-export function DataTable<T>({data: initialData, columns, getRowId}: DataTableProps<T>) {
-  const [data] = React.useState(() => initialData);
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [pagination, setPagination] = React.useState({
+export function DataTable<T>({data, columns, tableType, getRowId}: DataTableProps<T>) {
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const [materialModalOpen, setMaterialModalOpen] = useState(false);
+  const [projectModalOpen, setProjectModalOpen] = useState(false);
 
   const table = useReactTable({
     data,
@@ -76,37 +78,52 @@ export function DataTable<T>({data: initialData, columns, getRowId}: DataTablePr
 
   return (
     <div className="flex w-full flex-col justify-start gap-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                <ColumnsIcon />
-                <span className="hidden lg:inline">Customize Columns</span>
-                <span className="lg:hidden">Columns</span>
-                <ChevronDownIcon />
+      <div className="flex items-center  gap-2">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm">
+              <ColumnsIcon />
+              <span className="hidden lg:inline">Customize Columns</span>
+              <span className="lg:hidden">Columns</span>
+              <ChevronDownIcon />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            {table
+              .getAllColumns()
+              .filter((column) => typeof column.accessorFn !== "undefined" && column.getCanHide())
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) => column.toggleVisibility(!!value)}>
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <div className="">
+          {tableType === "projects" && (
+            <>
+              <Button variant="default" size="sm" onClick={() => setProjectModalOpen(true)}>
+                <PlusIcon className="mr-2 h-4 w-4" />
+                <span className="hidden lg:inline">Add Project</span>
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              {table
-                .getAllColumns()
-                .filter((column) => typeof column.accessorFn !== "undefined" && column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) => column.toggleVisibility(!!value)}>
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <div className="">
-            <AddProject />
-          </div>
+              <AddProject open={projectModalOpen} setOpen={setProjectModalOpen} />
+            </>
+          )}
+          {tableType === "materials" && (
+            <>
+              <Button variant="default" size="sm" onClick={() => setMaterialModalOpen(true)}>
+                <PlusIcon className="mr-2 h-4 w-4" />
+                <span className="hidden lg:inline">Add Material</span>
+              </Button>
+              <AddMaterial open={materialModalOpen} setOpen={setMaterialModalOpen} />
+            </>
+          )}
         </div>
       </div>
 

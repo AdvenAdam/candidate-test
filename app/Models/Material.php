@@ -13,7 +13,8 @@ class Material extends Model
         'name',
         'building_part_type',
         'material',
-        'supplier',
+        'supplier_id',
+        'project_id',
     ];
 
     public function project()

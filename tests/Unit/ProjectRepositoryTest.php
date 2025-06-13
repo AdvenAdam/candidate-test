@@ -147,7 +147,7 @@ class ProjectRepositoryTest extends TestCase
         ]);
 
         // Find the project by ID and user_id
-        $found = $this->projectRepository->find($project->id);
+        $found = $this->projectRepository->find($project->id, ['user_id' => $user->id]);
 
         // Assertions
         $this->assertNotNull($found);

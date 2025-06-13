@@ -28,12 +28,10 @@ const projectSchema = z.object({
 
 type ProjectFormValues = z.infer<typeof projectSchema>;
 
-export default function AddProject() {
+export default function AddProject({open, setOpen}: {open: boolean; setOpen: (open: boolean) => void}) {
   const {errors: serverErrors} = usePage().props as {
     errors: Partial<Record<keyof ProjectFormValues, string>>;
   };
-
-  const [open, setOpen] = useState(false);
 
   const {
     register,
@@ -66,13 +64,6 @@ export default function AddProject() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="default" size="sm">
-          <PlusIcon className="mr-2 h-4 w-4" />
-          <span className="hidden lg:inline">Add Project</span>
-        </Button>
-      </DialogTrigger>
-
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>

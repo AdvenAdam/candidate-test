@@ -11,9 +11,12 @@ interface User {
 interface AuthState {
   user: User | null;
   setUser: (user: User) => void;
+  resetUser: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   setUser: (user) => set({ user }),
+  resetUser: () => set({ user: null }),
 }));
+

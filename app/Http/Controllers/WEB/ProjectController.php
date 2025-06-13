@@ -19,15 +19,27 @@ class ProjectController extends Controller
 
     public function index()
     {
-        $projects = $this->projectRepo->all();
-        return Inertia::render('Projects/index', ['projects' => $projects]);
+        return Inertia::render('Projects/index', [
+            'projects' => $this->projectRepo->all(),
+        ]);
     }
 
-    public function show($project)
+    public function edit($project)
     {
-        return Inertia::render('Projects/show', ['project' => $project]);
+        return Inertia::render('Projects/edit', ['project' => $this->projectRepo->find($project)]);
     }
 
+    public function update(Request $request, $id)
+    {
+        $data = $request->validate([
+            'name' => 'sometimes|required|string',
+            'description' => 'nullable|string',
+        ]);
+
+        $this->projectRepo->update($id, $data);
+        return redirect()->route('project.index')
+            ->with('success', 'Project updated successfully!');
+    }
 
     public function store(Request $request)
     {
@@ -47,6 +59,6 @@ class ProjectController extends Controller
     {
         $this->projectRepo->delete($id);
         return redirect()->route('project.index')
-            ->with('success', 'Project created successfully!');
+            ->with('success', 'Project deleted successfully!');
     }
 }

@@ -19,11 +19,14 @@ class ProjectRepository implements ProjectRepositoryInterface
     }
 
 
-    public function find($id)
+    public function find($id, array $filters = [])
     {
-        return Project::findOrFail($id)->with('materials')->first();
+        return Project::with(['materials', 'materials.supplier'])->when(
+            isset($filters['user_id']),
+            fn($q) => $q->where('user_id', $filters['user_id']),
+            fn($q) => $q->where('user_id', Auth::id())
+        )->findOrFail($id);
     }
-
     public function create(array $data)
     {
         return Project::create($data);

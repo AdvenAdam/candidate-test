@@ -1,4 +1,4 @@
-<?
+<?php
 
 namespace App\Repositories;
 
@@ -30,6 +30,13 @@ class MaterialRepository implements MaterialRepositoryInterface
 
     public function delete($id)
     {
+        $material = Material::find($id);
+
+        if (!$material) {
+            logger("Material with ID $id not found");
+            return false;
+        }
+
         return Material::destroy($id);
     }
 

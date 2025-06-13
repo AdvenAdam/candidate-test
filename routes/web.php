@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\WEB\MaterialController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WEB\ProjectController;
 use Illuminate\Foundation\Application;
@@ -28,13 +29,21 @@ Route::middleware('auth')->group(function () {
 Route::get('/test-projects', [ProjectController::class, 'index']);
 
 Route::middleware('auth')->prefix('project')->name('project.')->group(function () {
+    // Project routes
     Route::get('/', [ProjectController::class, 'index'])->name('index');
+    Route::post('/', [ProjectController::class, 'store'])->name('store');
     Route::get('/{project}', [ProjectController::class, 'show'])->name('show');
-    Route::post('/store', [ProjectController::class, 'store'])->name('store');
-
     Route::get('/{project}/edit', [ProjectController::class, 'edit'])->name('edit');
     Route::put('/{project}', [ProjectController::class, 'update'])->name('update');
     Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('destroy');
+
+    // Nested Material routes
+    Route::prefix('{project}/material')->name('material.')->group(function () {
+        Route::get('/', [MaterialController::class, 'show'])->name('show'); // Updated to 'show'
+        Route::post('/', [MaterialController::class, 'store'])->name('store');
+        Route::put('/{material}', [MaterialController::class, 'update'])->name('update');
+        Route::delete('/{material}', [MaterialController::class, 'destroy'])->name('destroy');
+    });
 });
 
 
