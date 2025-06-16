@@ -7,45 +7,39 @@ use App\Models\Project;
 use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ProjectSeeder extends Seeder
 {
     public function run(): void
     {
 
-        // Safer: delete child tables first
-        Material::query()->delete();
-        Supplier::query()->delete();
-        Project::query()->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        // Seed fixed suppliers first
-        $suppliers = collect([
-            ['name' => 'Sodra', 'material_type' => 'clt'],
-            ['name' => 'KLH', 'material_type' => 'clt'],
-            ['name' => 'XLam', 'material_type' => 'clt'],
-            ['name' => 'Kalvasta Timber', 'material_type' => 'glt'],
-            ['name' => 'Timberlink', 'material_type' => 'glt'],
-        ])->map(fn($data) => Supplier::create($data));
+        DB::table('materials')->truncate();
+        DB::table('projects')->truncate();
 
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        // Get all users
         $users = User::all();
 
         Project::factory()
             ->count(5)
             ->create()
-            ->each(function ($project) use ($suppliers, $users) {
-                // Assign a random user
+            ->each(function ($project) use ($users) {
                 $project->user_id = $users->random()->id;
                 $project->save();
 
-                // Attach 3 materials with a random supplier
-                Material::factory()
-                    ->count(3)
-                    ->create([
+                for ($i = 0; $i < 3; $i++) {
+                    $materialType = fake()->randomElement(['clt', 'glt']);
+                    $supplier = Supplier::randomByType($materialType);
+
+                    Material::factory()->create([
                         'project_id' => $project->id,
-                        'supplier_id' => $suppliers->random()->id,
+                        'supplier_id' => $supplier?->id,
+                        'material' => $materialType,
                     ]);
+                }
             });
     }
 }
