@@ -35,7 +35,11 @@ class SupplierController extends Controller
     public function getSupplierMaterials(Request $request): JsonResponse
     {
         $type = strtolower($request->input('type'));
-        $materials = Supplier::where('material_type', $type)->get();
+        $materials = Supplier::where('material_type', $type)
+            ->orderBy('id')
+            ->get()->unique('name')
+            ->values();
+
         return response()->json($materials);
     }
 
