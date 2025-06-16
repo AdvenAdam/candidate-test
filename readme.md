@@ -42,3 +42,9 @@ The deadline for this assignment is 3 days from the date you receive the email a
 
 Please attach a demo video or a live project link here. (Update this section when you submit your assignment)
 [Video](https://drive.google.com/file/d/1AaPK8X2Qj-oRAuu_hUbNorlP9UIl6kYu/view?usp=sharing)
+
+### Feedback
+<!-- get image from file in the repository-->
+- Supplier select options outputing redundant data.
+<img src="feedback-for-adven.png" alt="Feedback for Adven" width="300">
+

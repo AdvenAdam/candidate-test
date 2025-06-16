@@ -90,7 +90,7 @@ class ProjectRepositoryTest extends TestCase
             ['name' => 'XLam', 'material_type' => 'clt'],
             ['name' => 'Kalvasta Timber', 'material_type' => 'glt'],
             ['name' => 'Timberlink', 'material_type' => 'glt'],
-        ])->map(fn($data) => Supplier::create($data));
+        ])->map(fn($data) => Supplier::firstOrCreate($data));
 
         // Create 2 projects for user A and 1 for user B
         $userAProjects = Project::factory()->count(2)->create(['user_id' => $userA->id]);
@@ -136,7 +136,7 @@ class ProjectRepositoryTest extends TestCase
             ['name' => 'XLam', 'material_type' => 'clt'],
             ['name' => 'Kalvasta Timber', 'material_type' => 'glt'],
             ['name' => 'Timberlink', 'material_type' => 'glt'],
-        ])->map(fn($data) => Supplier::create($data));
+        ])->map(fn($data) => Supplier::firstOrCreate($data));
 
         // Pick one supplier and assign 3 materials to the project
         $supplier = $suppliers->random();

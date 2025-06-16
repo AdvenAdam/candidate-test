@@ -2,43 +2,21 @@
 
 namespace Database\Seeders;
 
-use App\Models\Material;
 use App\Models\Supplier;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class SupplierSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        Material::query()->delete(); // First remove dependent data
-        Supplier::query()->delete(); // Then delete suppliers
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
+        DB::table('materials')->truncate();
+        DB::table('suppliers')->truncate();
 
-        Supplier::create([
-            'name'          => 'Sodra',
-            'material_type' => 'clt',
-        ]);
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        Supplier::create([
-            'name'          => 'KLH',
-            'material_type' => 'clt',
-        ]);
-
-        Supplier::create([
-            'name'          => 'XLam',
-            'material_type' => 'clt',
-        ]);
-        Supplier::create([
-            'name'          => 'Kalvasta Timber',
-            'material_type' => 'glt',
-        ]);
-
-        Supplier::create([
-            'name'          => 'Timberlink',
-            'material_type' => 'glt',
-        ]);
+        Supplier::seedDefaults();
     }
 }

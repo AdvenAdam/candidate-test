@@ -32,7 +32,7 @@ class MaterialRepositoryTest extends TestCase
             ['name' => 'XLam', 'material_type' => 'clt'],
             ['name' => 'Kalvasta Timber', 'material_type' => 'glt'],
             ['name' => 'Timberlink', 'material_type' => 'glt'],
-        ])->map(fn($data) => Supplier::create($data));
+        ])->map(fn($data) => Supplier::firstOrCreate($data));
 
 
         $data = [
@@ -96,7 +96,7 @@ class MaterialRepositoryTest extends TestCase
             ['name' => 'XLam', 'material_type' => 'clt'],
             ['name' => 'Kalvasta Timber', 'material_type' => 'glt'],
             ['name' => 'Timberlink', 'material_type' => 'glt'],
-        ])->map(fn($data) => Supplier::create($data));
+        ])->map(fn($data) => Supplier::firstOrCreate($data));
 
 
         // Create 2 materials for project1

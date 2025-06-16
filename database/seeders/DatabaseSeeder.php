@@ -15,12 +15,11 @@ class DatabaseSeeder extends Seeder
     {
         User::query()->delete();
 
-        User::factory()->count(5)->create();
-
         $this->call([
             SupplierSeeder::class,
         ]);
 
+        User::factory()->count(5)->create();
         $this->call(ProjectSeeder::class);
     }
 }
